@@ -11,10 +11,14 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/topojson/1.6.9/topojson.min.js"></script>
     <script type="text/javascript" src="datamaps.world.min.js"></script>
     <script type="text/javascript" src="flags_avg.js"></script>
+    <script type="text/javascript" src="name_alpha2.js"></script>
 
 </head>
 <body>
     <div id="container" style="position: relative; width: 500px; height: 300px;"></div>
+    <img id = "bandera" src="https://www.countryflags.io/co/shiny/64.png">
+    <button type="button" onclick="refrescar_bandera()">Generar Bandera</button> 
+    <p id="puntuacion">0</p>
     <script src="main.js"></script>  
 </body>
 </html>

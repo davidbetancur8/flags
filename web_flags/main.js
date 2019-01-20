@@ -1,33 +1,42 @@
-console.log(data[0])
+puntos = 0
+refrescar_bandera();
 
-  var basic_choropleth = new Datamap({
-    element: document.getElementById("container"),
-    projection: 'mercator',
-    fills: {
-      USA: 'rgb(0,0,0)',
-      defaultFill: "#ABDDA4",
-      authorHasTraveledTo: "#fa0fa0"
-    },
-    data: {
-      USA: { fillKey: "USA" },
-      JPN: { fillKey: "authorHasTraveledTo" },
-      ITA: { fillKey: "authorHasTraveledTo" },
-      CRI: { fillKey: "authorHasTraveledTo" },
-      KOR: { fillKey: "authorHasTraveledTo" },
-      DEU: { fillKey: "authorHasTraveledTo" },
-    }
-  });
-  
-  var colors = d3.scale.category10();
-  
-  window.setInterval(function() {
-    basic_choropleth.updateChoropleth({
-      USA: colors(Math.random() * 10),
-      RUS: colors(Math.random() * 100),
-      AUS: { fillKey: 'authorHasTraveledTo' },
-      BRA: colors(Math.random() * 50),
-      CAN: colors(Math.random() * 50),
-      ZAF: colors(Math.random() * 50),
-      IND: colors(Math.random() * 50),
+var basic_choropleth = new Datamap({
+  element: document.getElementById("container"),
+  projection: 'mercator',
+  done: function(datamap) {
+    datamap.svg.selectAll('.datamaps-subunit').on('click', function(geography) {
+      check_correct(geography.properties.name);
     });
-  }, 2000);
+}
+});
+
+basic_choropleth.updateChoropleth(data);
+
+function refrescar_bandera() {
+  const a2 = Object.keys(names_a2);
+  num_ale = Math.floor(Math.random() * (a2.length-1)); 
+  console.log(a2[num_ale])
+  name_ale = names_a2[a2[num_ale]]
+  console.log(name_ale)
+  document.getElementById("bandera").src = "https://www.countryflags.io/" + a2[num_ale] + "/shiny/64.png";
+  return 5
+}
+
+function check_correct(country_name) {
+  if (country_name == name_ale) {
+    update_points("correct")
+  } else {
+    update_points("incorrect")
+  }
+  refrescar_bandera();
+}
+
+function update_points(status){
+  if (status=="correct") {
+    puntos = puntos + 1 
+  } else {
+    puntos = puntos - 1
+  }
+  document.getElementById('puntuacion').innerHTML = puntos
+}

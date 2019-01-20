@@ -118,37 +118,40 @@ def get_avg(df_flags):
     df_avg = df_avg.set_index("country") # para el json
 
     df_country_info = pd.read_csv("countries_codes_and_coordinates.csv")
-    df_country_info = df_country_info.replace(['"', " "], ['', ""], regex=True)
+    df_country_info = df_country_info.replace(['"'], [''], regex=True)
+    df_country_info.loc[:,["Alpha-2 code","Alpha-3 code"]] =  df_country_info.loc[:,["Alpha-2 code","Alpha-3 code"]].replace([' '], [''], regex=True)
     cols = df_country_info.columns.drop(["Country","Alpha-2 code","Alpha-3 code"])
     df_country_info[cols] = df_country_info[cols].apply(pd.to_numeric, errors='coerce')
     df_country_info = df_country_info.set_index("Alpha-2 code")
+
+    df_name_alpha2 = df_country_info.loc[:,"Country"].copy()
 
 
     # tiene tambien latitud y longitud por lo que se necesite
     df_country_info = df_country_info.merge(df_avg, how='inner', left_index=True, right_index=True)
 
-    df_avg_alpha3 = df_country_info.loc[:,["Alpha-3 code", "r", "g", "b"]]
+    df_avg_alpha3 = df_country_info.loc[:,["Alpha-3 code", "r", "g", "b"]].copy()
     df_avg_alpha3 = df_avg_alpha3.set_index("Alpha-3 code")
+    df_avg_alpha3["value"] = "rgb(" + df_avg_alpha3['r'].astype(str) + "," + df_avg_alpha3['g'].astype(str) + "," + df_avg_alpha3['b'].astype(str) + ")"
+    df_avg_alpha3 = df_avg_alpha3.drop(["r", "g", "b"], axis=1)
 
-    return df_avg_alpha3
+    
+
+    return df_avg_alpha3, df_name_alpha2
 
 
 df_flags = get_flags()
 df_flags.to_pickle("flags.pkl")
 
-#df_flags = df_flags.set_index("color") # para el json
-#json_flags = json.loads(df_flags.to_json(orient='columns'))
 
-#with open('flags.json', 'w') as outfile:
-#    json.dump(json_flags, outfile)
+df_avg, df_name_alpha2 = get_avg(df_flags)
 
-#json_flags = df_flags.to_json(orient='columns')
-
-df_avg = get_avg(df_flags)
-df_avg = df_avg.transpose()
-json_avg = df_avg.to_dict(orient='list')
-
+df_avg = df_avg.iloc[:,0]
+json_avg = json.loads(df_avg.to_json(orient="columns"))
 with open('flags_avg.json', 'w') as outfile:
     json.dump(json_avg, outfile)
 
 
+json_alpha2 = json.loads(df_name_alpha2.to_json(orient="columns"))
+with open('name_alpha2.json', 'w') as outfile:
+    json.dump(json_alpha2, outfile)
