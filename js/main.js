@@ -5,7 +5,8 @@ names_a2["CG"] = "Republic of the Congo"
 names_a2["CD"] = "Democratic Republic of the Congo"
 names_a2["RS"] = "Republic of Serbia"
 names_a2["SS"] = "South Sudan"
-
+names_a2["IR"] = "Iran"
+names_a2["SY"] = "Syria"
 var basic_choropleth = new Datamap({
   element: document.getElementById("container"),
   projection: 'mercator',
@@ -14,8 +15,8 @@ var basic_choropleth = new Datamap({
     popupTemplate: function hover_flag(geography) {
       const code = Object.keys(names_a2).find(key => names_a2[key] === geography.properties.name);
       image_template = "<img src=" + "https://www.countryflags.io/" + code + "/shiny/64.png" + ">"
-      text_template = "<p>" + geography.properties.name + "</p>"
-      return image_template + geography.properties.name
+      text_template = '<p style="background-color: #d0d4db; display: inline;">' + geography.properties.name + "</p>"
+      return image_template + text_template
     }
   },
   done: function(datamap) {
@@ -39,3 +40,10 @@ function show_flag(country_name) {
 
 
 
+var slider = document.getElementById("myRange");
+var output = document.getElementById("demo");
+output.innerHTML = slider.value;
+
+slider.oninput = function() {
+  output.innerHTML = this.value;
+}

@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>flags</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" type="text/css" media="screen" href="main.css" />
+    <link rel="stylesheet" type="text/css" media="screen" href="css/main.css" />
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.3/d3.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/topojson/1.6.9/topojson.min.js"></script>
@@ -17,9 +17,13 @@
 <body>
     <div align = "center">
         <img src = "img/flags_plot.png"  width="800">
-        <div id="container" style="position: relative; width: 500px; height: 300px;"></div>
+        <div id="container" style="position: relative; width: 700px; height: 700px;"></div>
         <img id = "bandera" src="https://www.countryflags.io/co/shiny/64.png">
-        <script src="js/main.js"></script>  
+        <div class="slidecontainer">
+            <input type="range" min="1" max="100" value="50" class="slider" id="myRange">
+            <p>Value: <span id="demo"></span></p>
+        </div>
     </div>
+    <script src="js/main.js"></script>  
 </body>
 </html>
