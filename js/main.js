@@ -68,14 +68,14 @@ function update_map() {
   g = slider_green.value
   b = slider_blue.value
   console.log(r,g,b)
-  data_aux = data
+  data_aux = JSON.parse(JSON.stringify(data));
   for (var key in data){
     valores = data[key].split("(")[1].split(")")[0].split(",")
     rr = parseFloat(valores[0])
     gg = parseFloat(valores[1])
     bb = parseFloat(valores[2])
     if (rr<r || gg<g || bb<b){
-      data_aux[key] = "rgb(255,255,255)"
+      data_aux[key] = "rgb(200,200,200)"
     } else {
       data_aux[key] = data[key]
     }
@@ -83,4 +83,5 @@ function update_map() {
   basic_choropleth.updateChoropleth(data_aux)
 
   }
+  console.log(data)
 }
