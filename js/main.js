@@ -40,10 +40,47 @@ function show_flag(country_name) {
 
 
 
-var slider = document.getElementById("myRange");
-var output = document.getElementById("demo");
-output.innerHTML = slider.value;
+var slider_red = document.getElementById("slider_red");
+var output_red = document.getElementById("p_red");
+output_red.innerHTML = slider_red.value;
 
-slider.oninput = function() {
-  output.innerHTML = this.value;
+var slider_green = document.getElementById("slider_green");
+var output_green = document.getElementById("p_green");
+output_red.innerHTML = slider_green.value;
+
+var slider_blue = document.getElementById("slider_blue");
+var output_blue = document.getElementById("p_blue");
+output_red.innerHTML = slider_blue.value;
+
+
+slider_red.oninput = function() {
+  output_red.innerHTML = this.value;
+}
+slider_green.oninput = function() {
+  output_green.innerHTML = this.value;
+}
+slider_blue.oninput = function() {
+  output_blue.innerHTML = this.value;
+}
+
+function update_map() {
+  r = slider_red.value
+  g = slider_green.value
+  b = slider_blue.value
+  console.log(r,g,b)
+  data_aux = data
+  for (var key in data){
+    valores = data[key].split("(")[1].split(")")[0].split(",")
+    rr = parseFloat(valores[0])
+    gg = parseFloat(valores[1])
+    bb = parseFloat(valores[2])
+    if (rr<r || gg<g || bb<b){
+      data_aux[key] = "rgb(255,255,255)"
+    } else {
+      data_aux[key] = data[key]
+    }
+
+  basic_choropleth.updateChoropleth(data_aux)
+
+  }
 }
