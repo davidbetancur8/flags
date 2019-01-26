@@ -18,15 +18,22 @@
     <div align = "center">
         <img src = "img/flags_plot.png"  width="800">
         <div id="container" style="position: relative; width: 700px; height: 700px;"></div>
+        <p id="p_name">Name: Colombia</p>
         <img id = "bandera" src="https://www.countryflags.io/co/shiny/64.png">
+        <p id="pop">Population: 48759958</p>
+        <p id="p_ar">Area: 1141748</p>
+        <h3>Borders: </h3>
+        <div id="borders"></div>
+
+        <h2>Control colores</h2>
         <div class="slidecontainer">
-            <input type="range" min="1" max="255" value="50" class="slider" id="slider_red">
+            <input type="range" min="0" max="255" value="50" class="slider" id="slider_red">
             <p>Rojo: <span id="p_red"></span></p>
 
-            <input type="range" min="1" max="255" value="50" class="slider" id="slider_green">
+            <input type="range" min="0" max="255" value="50" class="slider" id="slider_green">
             <p>Verde: <span id="p_green"></span></p>
 
-            <input type="range" min="1" max="255" value="50" class="slider" id="slider_blue">
+            <input type="range" min="0" max="255" value="50" class="slider" id="slider_blue">
             <p>Azul: <span id="p_blue"></span></p>
         </div>
         <button type="button" onclick="update_map()">Actualizar</button>

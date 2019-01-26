@@ -9,6 +9,14 @@ names_a2["IR"] = "Iran"
 names_a2["SY"] = "Syria"
 names_a2["MM"] = "Myanmar"
 
+
+function unique(a) {
+  return a.sort().filter(function(value, index, array) {
+      return (index === 0) || (value !== array[index-1]);
+  });
+}
+
+
 var basic_choropleth = new Datamap({
   element: document.getElementById("container"),
   projection: 'mercator',
@@ -34,14 +42,64 @@ function show_flag(country_name) {
 
   const code = Object.keys(names_a2).find(key => names_a2[key] === country_name);
   document.getElementById("bandera").src = "https://www.countryflags.io/" + code + "/shiny/64.png";
+  population = document.getElementById("pop")
+  area = document.getElementById("p_ar")
+  p_name = document.getElementById("p_name")
+  const Http = new XMLHttpRequest();
+  const url='https://restcountries.eu/rest/v2/alpha/' + code;
+  Http.open("GET", url);
+  Http.send();
+  Http.onreadystatechange=(e)=>{
+    info = JSON.parse(Http.responseText)
+    population.innerHTML = "Population: " + info["population"]
+    area.innerHTML = "Area: " + info["area"]
+    p_name.innerHTML = info["name"]
+    create_list_borders(info["borders"]);
+  }
+
   if (code == undefined){
     console.log("indefindio")
   }
   console.log(code)
 }
 
+function create_list_borders(borders) {
+  div_bord = document.getElementById("borders")
+  div_bord.innerHTML = ""
+  alpha2_borders = []
+  for (border in borders){
+    const Http = new XMLHttpRequest();
+    const url='https://restcountries.eu/rest/v2/alpha/' + borders[border];
+    Http.open("GET", url);
+    Http.send();
+    Http.onreadystatechange=(e)=>{
+      info = JSON.parse(Http.responseText)
+      alpha2_borders.push(info["alpha2Code"])
+      console.log(unique(alpha2_borders))
+      update_images_borders(unique(alpha2_borders))
+  }
+  }
 
+}
 
+function update_images_borders(a2) {
+  div_bord = document.getElementById("borders")
+  div_bord.innerHTML = ""
+  console.log("h")
+  console.log(a2)
+  for (i in a2){
+    div_img_txt = document.createElement("div")
+    div_img_txt.style = "display:inline-block"
+    imagen = document.createElement('img');
+    imagen.src = "https://www.countryflags.io/" + a2[i] + "/shiny/64.png"
+    p_country = document.createElement('p');
+    p_country.innerHTML = a2[i]
+    div_img_txt.appendChild(imagen)
+    div_img_txt.appendChild(p_country)
+    div_bord.appendChild(div_img_txt)
+  }
+  
+}
 var slider_red = document.getElementById("slider_red");
 var output_red = document.getElementById("p_red");
 output_red.innerHTML = slider_red.value;
