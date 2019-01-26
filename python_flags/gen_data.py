@@ -8,6 +8,9 @@ from bs4 import BeautifulSoup
 import json
 
 def get_codes():
+    # Funcion para generar df de nombres y codigos alpha2 de los paises
+    # La funcion va a la pagina de Wikipedia y lee la tabla y lo guarda todo
+    # en un df
     url = "https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2"
     r = requests.get(url)
     soup = BeautifulSoup(r.content)
@@ -30,8 +33,11 @@ def get_codes():
     codes_df = pd.DataFrame({"codigo":codigos, "nombre":nombres})
     return codes_df
 
-    #https://stackoverflow.com/questions/9694165/convert-rgb-color-to-english-color-name-like-green-with-python
 def closest_colour(requested_colour):
+    # Se utilizó el codigo en este link para categorizar los colores por nombre:
+    # https://stackoverflow.com/questions/9694165/convert-rgb-color-to-english-color-name-like-green-with-python
+    # Funciona utilizando la distancia euclidiana entre el color que se tiene y los colores de css.
+    # Calcula entonces estas distancias y la menor distancia es la que escoge.
     min_colours = {}
     for key, name in wc.css3_hex_to_names.items():
         r_c, g_c, b_c = wc.hex_to_rgb(key)
@@ -51,27 +57,30 @@ def get_colour_name(requested_colour):
 
 def get_flags():
     #https://countryflags.io/
-    df_codes = get_codes()
+    df_codes = get_codes() # genero el df de codigos alpha2
     codes = list(df_codes.codigo)
     df_flags = pd.DataFrame(columns=["color", "aux_delete"])
     for code in codes:
+        # Para cada uno de los codigos:
+        # llamo la api y leo los pixeles de el pais actual y creo un dataframe con R, G, B, a
         url = "https://www.countryflags.io/" + code + "/flat/64.png"
         response = requests.get(url)
         img = Image.open(BytesIO(response.content))
         img_np =np.array(img)
         a = img_np.reshape((4096, 4))
-
         df = pd.DataFrame(a)
         df.columns = ["R" ,"G", "B", "a"]
         df = df.astype(int)
         df = df[df.a != 0]
+        # Aqui agrupo para tener unicamente cuantos pixeles de cada color se tienen
         df = df.groupby(df.columns.tolist()).size().reset_index().rename(columns={0:code})
-
+        # Se llama la funcion get_colour_name para darle un nombre o categorizar cada color
         df['color'] = df.apply(lambda row: get_colour_name((row.R, row.G, row.B))[1], axis=1)
 
         df = df.loc[:,[code, "color"]]
         df = df.groupby("color").sum()
         df = df.reset_index()
+        # Hago un merge para armar el dataframe con todos los paises
         df_flags = df_flags.merge(df, how='outer', left_on='color', right_on='color')
         print(code, end =" ")
 
@@ -99,11 +108,15 @@ def get_flags():
     return df_flags
 
 def get_avg(df_flags):
+    # Esta funcion me genera un dataframe con los colores promedio de las banderas de cada pais (en alpha3) y 
+    # otro df con los nombres alhpa2 y nombres de los paises
     df_rgb = df_flags.loc[:,["r", "g", "b"]].copy()
     df_flags = df_flags.drop(["sum_unique", "r", "g", "b", "sum_pixels", "percentage of pixels"], axis=1).copy()
     df_flags = df_flags.set_index("color")
     df_avg = pd.DataFrame(columns=["country", "r", "g", "b"])
     for column in df_flags:
+        # Para cada pais multiplico el valor de rojo, verde y azul por el numero de pixeles que tiene
+        # Luego divido estos valores por el numero de pixeles total y asi obtengo el promedio
         df = df_rgb.copy()
         df["color"] = df_flags[column].values
         df["r_sum"] = df["color"] * df["r"]
@@ -117,6 +130,7 @@ def get_avg(df_flags):
         df_avg = df_avg.append(df_aux, ignore_index=True)
     df_avg = df_avg.set_index("country") # para el json
 
+    # Aqui organizo el df para que queden los promedios con los codigos y nombres de los paises
     df_country_info = pd.read_csv("countries_codes_and_coordinates.csv")
     df_country_info = df_country_info.replace(['"'], [''], regex=True)
     df_country_info.loc[:,["Alpha-2 code","Alpha-3 code"]] =  df_country_info.loc[:,["Alpha-2 code","Alpha-3 code"]].replace([' '], [''], regex=True)
@@ -138,20 +152,3 @@ def get_avg(df_flags):
     
 
     return df_avg_alpha3, df_name_alpha2
-
-
-df_flags = get_flags()
-df_flags.to_pickle("flags.pkl")
-
-
-df_avg, df_name_alpha2 = get_avg(df_flags)
-
-df_avg = df_avg.iloc[:,0]
-json_avg = json.loads(df_avg.to_json(orient="columns"))
-with open('flags_avg.json', 'w') as outfile:
-    json.dump(json_avg, outfile)
-
-
-json_alpha2 = json.loads(df_name_alpha2.to_json(orient="columns"))
-with open('name_alpha2.json', 'w') as outfile:
-    json.dump(json_alpha2, outfile)

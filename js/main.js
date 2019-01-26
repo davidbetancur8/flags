@@ -7,6 +7,8 @@ names_a2["RS"] = "Republic of Serbia"
 names_a2["SS"] = "South Sudan"
 names_a2["IR"] = "Iran"
 names_a2["SY"] = "Syria"
+names_a2["MM"] = "Myanmar"
+
 var basic_choropleth = new Datamap({
   element: document.getElementById("container"),
   projection: 'mercator',
