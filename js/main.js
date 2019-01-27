@@ -8,7 +8,7 @@ names_a2["SS"] = "South Sudan"
 names_a2["IR"] = "Iran"
 names_a2["SY"] = "Syria"
 names_a2["MM"] = "Myanmar"
-
+names_a2["LA"] = "Laos"
 
 function unique(a) {
   return a.sort().filter(function(value, index, array) {
@@ -50,9 +50,10 @@ function show_flag(country_name) {
   Http.open("GET", url);
   Http.send();
   Http.onreadystatechange=(e)=>{
+    console.log(Http.responseText)
     info = JSON.parse(Http.responseText)
     population.innerHTML = "Population: " + info["population"]
-    area.innerHTML = "Area: " + info["area"]
+    area.innerHTML = "Area(km^2): " + info["area"]
     p_name.innerHTML = info["name"]
     create_list_borders(info["borders"]);
   }
@@ -75,7 +76,6 @@ function create_list_borders(borders) {
     Http.onreadystatechange=(e)=>{
       info = JSON.parse(Http.responseText)
       alpha2_borders.push(info["alpha2Code"])
-      console.log(unique(alpha2_borders))
       update_images_borders(unique(alpha2_borders))
   }
   }
@@ -85,8 +85,6 @@ function create_list_borders(borders) {
 function update_images_borders(a2) {
   div_bord = document.getElementById("borders")
   div_bord.innerHTML = ""
-  console.log("h")
-  console.log(a2)
   for (i in a2){
     div_img_txt = document.createElement("div")
     div_img_txt.style = "display:inline-block"
