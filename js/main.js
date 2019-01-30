@@ -143,3 +143,86 @@ function update_map() {
   }
   console.log(data)
 }
+
+
+var ctx = document.getElementById("canvas1").getContext('2d');
+
+var myChart = new Chart(ctx, {
+  // The type of chart we want to create
+  type: 'radar',
+
+  // The data for our dataset
+  data: {
+    labels: ["Africa", 
+             "Antartica",
+             "Asia", 
+             "Europa",
+             "Norte America", 
+             "Oceania",
+             "Sur America", 
+             ],
+    datasets: [{
+      label: "Rojo",
+      backgroundColor: 'rgba(255,0,0,0.3)',
+      borderColor: 'rgba(179,181,198,1)',
+      data: [131.04399717514121,
+        98.36808333333335,
+        161.63147988505744,
+        176.70326923076925,
+        128.17267094017095,
+        114.58741666666667,
+        150.55208333333337]
+    }, {
+      label: "Verde",
+      backgroundColor: 'rgba(0,255,0,0.3)',
+      borderColor: 'rgba(179,181,198,1)',
+      data: [116.27050847457629,
+        76.14641666666667,
+        110.25350574712644,
+        106.54996794871798,
+        108.70940170940172,
+        97.50821666666667,
+        119.06921875]
+    }, {
+      label: "Azul",
+      backgroundColor: 'rgba(0,0,255,0.3)',
+      borderColor: 'rgba(179,181,198,1)',
+      data: [91.24826977401125,
+        138.22491666666667,
+        101.3025287356322,
+        110.64713141025638,
+        125.08934829059832,
+        118.5187,
+        93.2134375]
+    }]
+  },
+
+  // Configuration options go here
+  options: {
+    scale: {
+      pointLabels: {
+        fontSize: 10
+      },
+      ticks: {
+        min: 0,
+        max: 255
+      }
+
+    },
+    layout: {
+      padding: {
+        left: 100,
+        right: 100,
+        top: 100,
+        bottom: 100
+      }
+    },
+    title: {
+      display: true,
+      text: 'Grafica',
+      fontSize: 20
+    },
+
+  },
+
+});
