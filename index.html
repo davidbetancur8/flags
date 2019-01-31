@@ -10,7 +10,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.3/d3.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/topojson/1.6.9/topojson.min.js"></script>
-    
+
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
@@ -66,13 +66,22 @@
 
         <h2>Colores en banderas del mundo</h2>
         <img src = "img/flags_plot.png"  width=50%><br>
+
+        <h2>Numero de colores por continente</h2>
+        <p align="justify">
+            Vamos a ver ahora un gráfico que nos muestra el promedio de colores por bandera por
+            cada continente. Es interesante ver que el continente con más colores en sus banderas
+            es Antartica, llegando casi a 6 colores por bandera. El continente que menos colores
+            tiene vendría siendo America del Sur con un poco menos de 3 colores por bandera.
+        </p>
+
         <img src = "img/continent_ncolors.png" width=50%><br>
         <img src = "img/rgb_dist.png"  width=50%>
 
 
 
-        <div id='figure' width="100%" height="100%">
-            <canvas id="canvas1" ></canvas>
+        <div id='figure'>
+            <canvas id="canvas1" width="400" height="400"></canvas>
         </div>
 
 
