@@ -212,7 +212,7 @@ var myChart = new Chart(ctx, {
       },
       ticks: {
         min: 0,
-        max: 300
+        max: 200
       }
 
     },
