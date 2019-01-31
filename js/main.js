@@ -219,7 +219,7 @@ var myChart = new Chart(ctx, {
     },
     title: {
       display: true,
-      text: 'Grafica',
+      text: 'Distribución de RGB por continentes',
       fontSize: 20
     },
 
