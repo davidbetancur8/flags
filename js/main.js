@@ -205,7 +205,7 @@ var myChart = new Chart(ctx, {
       },
       ticks: {
         min: 0,
-        max: 250
+        max: 180
       }
 
     },
