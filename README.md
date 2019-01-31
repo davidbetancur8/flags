@@ -2,7 +2,7 @@
 Visualization of world flags
 
 <h2> Instructions </h2>
-The final web page is at <a src="https://davidbetancur8.github.io/flags/">Flags</a> <br>
+The final web page is at https://davidbetancur8.github.io/flags/  <br>
 To run the notebooks in the python_flags directory first install the requirements in requirements.txt.
 <br>
 After installing the requirements then:
