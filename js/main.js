@@ -10,6 +10,10 @@ names_a2["SY"] = "Syria"
 names_a2["MM"] = "Myanmar"
 names_a2["LA"] = "Laos"
 
+
+Chart.defaults.global.defaultFontSize = 15;
+Chart.defaults.scale.gridLines.display = false;
+
 function unique(a) {
   return a.sort().filter(function(value, index, array) {
       return (index === 0) || (value !== array[index-1]);
@@ -148,6 +152,8 @@ function update_map() {
 var ctx = document.getElementById("canvas1").getContext('2d');
 
 var myChart = new Chart(ctx, {
+
+ 
   // The type of chart we want to create
   type: 'radar',
 
