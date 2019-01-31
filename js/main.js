@@ -205,6 +205,7 @@ var myChart = new Chart(ctx, {
 
   // Configuration options go here
   options: {
+    responsive: false,
     scale: {
       pointLabels: {
         fontSize: 10
