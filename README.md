@@ -3,6 +3,9 @@ Visualization of world flags
 
 <h2> Instructions </h2>
 The final web page is at https://davidbetancur8.github.io/flags/  <br>
+The project repo is at https://github.com/davidbetancur8/flags <br>
+The html reports of the jupyter notebooks are in python_flags/reports.<br>
+
 To run the notebooks in the python_flags directory first install the requirements in requirements.txt.
 <br>
 After installing the requirements then:
